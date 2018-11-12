@@ -3,27 +3,29 @@ import numpy as np
 from sklearn import tree
 from common import print_prediction
 
-def model_tree_fit(X_train,y_train,X_test,y_test):
+def model_tree_fit(X_train,y_train,X_test,y_test,file_out):
 #    print ('\n\t' + 'TRAIN\t |\tTEST')
     dtc = tree.DecisionTreeClassifier(random_state=228)
     dtc = dtc.fit(X_train, y_train)
 
     predictions = dtc.predict(X_train)
     predictions_test = dtc.predict(X_test)
-    print_prediction(predictions, y_train, predictions_test, y_test)
+    print_prediction(predictions, y_train, predictions_test, y_test,file_out)
     return dtc
 
 from sklearn.ensemble import RandomForestClassifier
 
-def model_RandomForest_fit (X_train,y_train,X_test,y_test, \
-                            n_estimators=1000, max_depth=5):
+def model_RandomForest_fit (file_out, X_train,y_train,X_test,y_test, \
+                            n_estimators=1000, max_depth=None, \
+                            flag_graph=0):
     rf = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, random_state=228)
     rf = rf.fit(X_train, y_train)
 
     predictions = rf.predict(X_train)
     predictions_test = rf.predict(X_test)
-    print_prediction(predictions, y_train, predictions_test, y_test)
-
+    if flag_graph == 0:
+        print_prediction(predictions, y_train, predictions_test, y_test, file_out)
+    
     return rf
 
 import matplotlib.pyplot as plt

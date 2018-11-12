@@ -1,3 +1,6 @@
 *.ipynb
 *~
 Lectures/
+#*
+.#*
+__pycache__/
