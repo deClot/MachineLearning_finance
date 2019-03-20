@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix
 from imblearn.over_sampling import RandomOverSampler, SMOTE, ADASYN
 
 import preparing_data
+import pca_func
 import common
 from trees_classifiers import model_RandomForest_fit, model_tree_fit
 from nn_classifier import get_nn_model, loss_graph, fit_nn_model
@@ -31,19 +32,22 @@ X_norm, X_test_norm = preparing_data.norm_data(X,X_test,y_pos,y_test_pos,\
                                                real='standart',\
                                                categ='target',\
                                                all = True)
+#  ------- Used it for cros-val  --------
+#X_train, X_dev, y_train, y_dev = train_test_split(X_norm,y, random_state = 228)
 
-X_train, X_dev, y_train, y_dev = train_test_split(X_norm,y, random_state = 228)
-X_replaced, y_replaced = SMOTE(random_state=228, k_neighbors=2).fit_resample(X_train, y_train)
-X_replaced, y_replaced = ADASYN(random_state=228, n_neighbors=4).fit_resample(X_train, y_train)
+#  ------- Used it for study influence of sampling  --------
+#X_replaced, y_replaced  = RandomOverSampler(random_state=228).fit_resample(X_train, y_train)
+X_replaced, y_replaced = SMOTE(random_state=228, k_neighbors=5).fit_resample(X_train, y_train)
+#X_replaced, y_replaced = ADASYN(random_state=228, n_neighbors=4).fit_resample(X_norm, y_train)X_train = X_replaced
+
 X_train = X_replaced
 y_train = y_replaced
-#X_train,X_train_dev, y_train, y_train_dev = train_test_split(X_replaced,y_replaced, random_state = 228)
 
-#X_train = X
-#y_train = y
-preparing_data.print_count_data(y,y_train)
-#preparing_data.print_count_data(y_train,y_train_dev)
-preparing_data.print_count_data(y_dev,y_test)
+#  ------- Used it for study influence of pca  --------
+X_pca, X_test_pca = pca_func.pca(X_train,X_test, 55)
+X_train = X_pca
+X_test = X_test_pca
+
 
 def main_body (X_train,y_train,X_dev, y_dev):
     file_out = open('result.res', 'w')
