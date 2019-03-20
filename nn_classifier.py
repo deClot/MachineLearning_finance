@@ -24,7 +24,8 @@ def loss_graph(epochs, batch_size, train_loss, val_loss, name):
     
     plt.figure(figsize=(10, 7))
     plt.plot(x_axis, train_loss, color='b', lw=3, alpha=0.7, label='Train Loss')
-    plt.plot(x_axis, val_loss, color='r', lw=3, alpha=0.7, label='Val Loss')
+    if val_loss != None:
+        plt.plot(x_axis, val_loss, color='r', lw=3, alpha=0.7, label='Val Loss')
     plt.title('Loss graph')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
@@ -34,21 +35,40 @@ def loss_graph(epochs, batch_size, train_loss, val_loss, name):
     path = 'Graphs/NN_'
     plt.savefig(path + name + str(epochs) + 'bs'+str(batch_size)+'.png')
 
-def fit_nn_model (epochs, X_train, y_train, X_dev, y_dev,file_out, batch_size = 32):
+def fit_nn_model (epochs, X_train, y_train, X_dev, y_dev,X_text, y_text,\
+                  file_out, batch_size = 32, out = True):
     nn = get_nn_model(X_train.shape[1])
-    logs = nn.fit(X_train,y_train, epochs=epochs, batch_size=32,\
-                  validation_data=(X_dev, y_dev), shuffle=True, verbose = 0)
+    if X_dev == None:
+        X_dev = X_test
+        y_dev = y_test
+        flag = 1
 
-    loss_graph(epochs, batch_size, logs.history.get('loss'), logs.history.get('val_loss'),\
-           name = 'dev')
-    y_train_pred = nn.predict_on_batch(X_train)
-    y_train_pred = np.where(y_train_pred > 0.5, 1, 0)
+    #validation_data=(X_dev, y_dev),
+    logs = nn.fit(X_train,y_train, epochs=epochs, batch_size=batch_size,\
+                  shuffle=True, verbose = 0)
 
-    y_test_pred = nn.predict_on_batch(X_dev)
-    y_test_pred = np.where(y_test_pred > 0.5, 1, 0)
+    loss_graph(epochs, batch_size, logs.history.get('loss'),\
+               logs.history.get('val_loss'), name = name)
+    loss_graph(epochs, batch_size, logs.history.get('loss'), name = name)
+    
+    predictions = nn.predict_on_batch(X_train)
+    predictions = np.where(predictions > 0.5, 1, 0)
 
-    print (X_dev.shape, y_test_pred.shape)
+    predictions_test = nn.predict_on_batch(X_test)
+    predictions_test = np.where(predictions_test > 0.5, 1, 0)
+
+    if flag == 1:
+        predictions_dev = None
+        dev = False
+    else:
+        predictions_dev = nn.predict_on_batch(X_dev)
+        predictions_dev = np.where(predictions_dev > 0.5, 1, 0)
+    
+    
     #cm = confusion_matrix(y_dev, y_test_pred)
-    common.print_prediction(y_train_pred,y_train, y_test_pred, y_dev,file_out)
+    common.print_prediction(predictions, y_train, \
+                                            predictions_dev, y_dev, \
+                                            predictions_test, y_test,\
+                                            file_out, dev, out= out )
 
     return nn

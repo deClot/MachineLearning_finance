@@ -5,6 +5,8 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from common import print_prediction
 
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+
 def model_tree_fit(X_train,y_train,X_dev,y_dev,X_test,y_test,file_out,\
                    max_depth=None, out = True):
     dtc = tree.DecisionTreeClassifier(random_state=228, max_depth = max_depth)
