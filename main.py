@@ -9,7 +9,8 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 from imblearn.over_sampling import RandomOverSampler, SMOTE, ADASYN
 
 from sklearn import tree
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
 import preparing_data
@@ -18,7 +19,7 @@ import common
 from trees_classifiers import model_RandomForest_fit, model_tree_fit
 from nn_classifier import get_nn_model, loss_graph, fit_nn_model
 from regression import model_logistic_regression, Logic_regression_graph
-from grad_boost import model_Ada, model_GradBoost, model_CatBoost
+from grad_boost import model_GradBoost
 
 #  -------  Read data from CSV --------
 train_data = pd.read_csv('finance_train.csv')
@@ -91,15 +92,19 @@ def main_body (X_train,y_train,X_test, y_test, \
                                        cv =5).mean()))
     file_out.write ('\n')
     '''
-    
 
+    # ------- Gradint Boosting -------
     '''
+    gb = GradientBoostingClassifier(n_estimators=64, max_depth=1,
+                                 random_state=228)
+    file_out.write('Gradient Boosting\n')
+    file_out.write(str(cross_val_score(gb, X_train, y_train, scoring='recall',\
+                                       cv =5).mean()))
+    file_out.write ('\n')
+    '''
+    
     file_out.write('----AdaBoost----\n')
     abdt = model_Ada(X_train,y_train,X_dev, y_dev,file_out,n_estimators=64,depth=1)
-    
-    file_out.write('----GradBoost----\n')
-    gb  = model_GradBoost(X_train,y_train,X_dev, y_dev,file_out,\
-                          n_estimators=64,depth=1)
     
     
     file_out.write('----CatBoost----\n')
