@@ -14,10 +14,23 @@ from trees_classifiers import model_RandomForest_fit, model_tree_fit
 from nn_classifier import get_nn_model, loss_graph, fit_nn_model
 from grad_boost import model_Ada, model_GradBoost, model_CatBoost
 
-X,y,X_test,y_test, y_ini, train_data = preparing_data.load_data(y_lab = 'negative')
-X_norm, X_test_norm = preparing_data.preprocessing_real_data(X,X_test,y_ini)
-#X_norm.shape[1]
-#X_pca, X_test_pca = preparing_data.pca(X_norm, X_test_norm,2)
+#  -------  Read data from CSV --------
+train_data = pd.read_csv('finance_train.csv')
+test_data = pd.read_csv('finance_test.csv')
+
+#  ------- Cutting outliers for real features  --------
+train_data, test_data = preparing_data.features_cut(train_data,test_data,\
+                                                    plot=False)
+#  ------- Separate data on X,y  --------
+X,y,X_test,y_test,y_ini,y_test_ini,y_pos,y_test_pos = \
+    preparing_data.X_y_data(train_data,test_data,\
+                            y_lab = 'negative')
+
+#  ------- Norm X - for real and catecorical features  --------
+X_norm, X_test_norm = preparing_data.norm_data(X,X_test,y_pos,y_test_pos,\
+                                               real='standart',\
+                                               categ='target',\
+                                               all = True)
 
 X_train, X_dev, y_train, y_dev = train_test_split(X_norm,y, random_state = 228)
 X_replaced, y_replaced = SMOTE(random_state=228, k_neighbors=2).fit_resample(X_train, y_train)
