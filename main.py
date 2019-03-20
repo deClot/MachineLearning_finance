@@ -14,13 +14,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
 import preparing_data
+from plot_resampled import resampled_study
 import pca_func
 import common
 from trees_classifiers import model_RandomForest_fit, model_tree_fit
 from nn_classifier import get_nn_model, loss_graph, fit_nn_model
 from regression import model_logistic_regression, Logic_regression_graph
 from grad_boost import model_GradBoost
-
 
 def main_cross_val (X_train, y_train, file_out):
     '''Function for implement all models with fixed parameters with cross-validation'''
@@ -125,6 +125,7 @@ if __name__=='__main__':
     #X_train, X_dev, y_train, y_dev = train_test_split(X_norm,y, random_state = 228)
     
     #  ------- Used it for study influence of sampling  --------
+    #resampled_study(X_train,y_train)
     #X_replaced, y_replaced  = RandomOverSampler(random_state=228).fit_resample(X_train, y_train)
     X_replaced, y_replaced = SMOTE(random_state=228, k_neighbors=5).fit_resample(X_train, y_train)
     #X_replaced, y_replaced = ADASYN(random_state=228, n_neighbors=4).fit_resample(X_norm, y_train)X_train = X_replaced
