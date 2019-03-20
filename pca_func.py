@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn import decomposition
 from imblearn.over_sampling import SMOTE
 from trees_classifiers import model_RandomForest_fit, model_tree_fit,Tree_graph
-from grad_boost import model_Ada, model_GradBoost, model_CatBoost, GradBoost_graph
-from regression import model_logistic_regression, Logic_regression_graph
+from grad_boost import model_GradBoost
+from regression import model_logistic_regression
 from sklearn.metrics import precision_recall_fscore_support
 
 def pca(X_train, X_test, n_components):
@@ -57,7 +57,7 @@ def pca_recall(X_train,y_train,X_dev,y_dev,X_test,y_test,file_out,comment ):
    
     for n in range(X_train.shape[1]):
         print (n+1)
-        pca(X_train, X_test, n+1):
+        pca(X_train, X_test, n+1)
          
         X_replaced, y_replaced = SMOTE(random_state=228, k_neighbors=5).fit_resample(X_train_pca, y_train)
         tr = model_tree_fit(X_replaced,y_replaced,X_dev,y_dev,\

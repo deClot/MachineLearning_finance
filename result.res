@@ -1,39 +1,52 @@
-----AdaBoost----
+----Tree----
 Confusion matrix TRAIN
-[[1904  197]
- [  46 2050]]
-Confusion matrix DEV
-[[632  77]
- [  5  17]]
-	TRAIN	 |	DEV
-ACC:    0.9421	|	0.8878
-PREC:   0.9123	|	0.1809
-RECALL: 0.9781	|	0.7727
+[[2580  230]
+ [  43 2767]]
+Confusion matrix TEST
+[[670  56]
+ [  3  22]]
+	TRAIN	|	TEST
+ACC:    0.9514	|	0.9214
+PREC:   0.9233	|	0.2821
+RECALL: 0.9847	|	0.88
+
+
+--Random Forest--
+Confusion matrix TRAIN
+[[2664  146]
+ [   0 2810]]
+Confusion matrix TEST
+[[680  46]
+ [  3  22]]
+	TRAIN	|	TEST
+ACC:    0.974	|	0.9348
+PREC:   0.9506	|	0.3235
+RECALL: 1.0	|	0.88
+
+
+----LogisticRegression----
+Confusion matrix TRAIN
+[[2577  233]
+ [  78 2732]]
+Confusion matrix TEST
+[[665  61]
+ [  4  21]]
+	TRAIN	|	TEST
+ACC:    0.9447	|	0.9134
+PREC:   0.9214	|	0.2561
+RECALL: 0.9722	|	0.84
 
 
 ----GradBoost----
 Confusion matrix TRAIN
-[[1821  280]
- [  84 2012]]
-Confusion matrix DEV
-[[613  96]
- [  3  19]]
-	TRAIN	 |	DEV
-ACC:    0.9133	|	0.8646
-PREC:   0.8778	|	0.1652
-RECALL: 0.9599	|	0.8636
-
-
-----CatBoost----
-Confusion matrix TRAIN
-[[2101    0]
- [   0 2096]]
-Confusion matrix DEV
-[[726   0]
- [ 25   0]]
-	TRAIN	 |	DEV
-ACC:    1.0	|	0.9667
-PREC:   1.0	|	0.0
-RECALL: 1.0	|	0.0
+[[2679  131]
+ [   9 2801]]
+Confusion matrix TEST
+[[681  45]
+ [  3  22]]
+	TRAIN	|	TEST
+ACC:    0.9751	|	0.9361
+PREC:   0.9553	|	0.3284
+RECALL: 0.9968	|	0.88
 
 
